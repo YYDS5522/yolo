@@ -1,9 +1,8 @@
 import warnings
 warnings.filterwarnings('ignore')
 import os
-os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"  # 解决OpenMP冲突
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE" 
 from ultralytics import YOLO
-
 if __name__ == '__main__':
     model = YOLO(r'')
     model.val(
