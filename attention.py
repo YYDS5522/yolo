@@ -32,12 +32,9 @@ class SimAM(torch.nn.Module):
 
     def forward(self, x):
         b, c, h, w = x.size()
-
         n = w * h - 1
-
         x_minus_mu_square = (x - x.mean(dim=[2, 3], keepdim=True)).pow(2)
         y = x_minus_mu_square / (4 * (x_minus_mu_square.sum(dim=[2, 3], keepdim=True) / n + self.e_lambda)) + 0.5
-
         return x * self.activaton(y)
     
     
@@ -45,18 +42,14 @@ class SimAM(torch.nn.Module):
 class MLCA(nn.Module):
     def __init__(self, in_size, local_size=5, gamma = 2, b = 1,local_weight=0.5):
         super(MLCA, self).__init__()
-        # ECA 计算
         self.local_size=local_size
         self.gamma = gamma
         self.b = b
         t = int(abs(math.log(in_size, 2) + self.b) / self.gamma)   # eca  gamma=2
         k = t if t % 2 else t + 1
-
         self.conv = nn.Conv1d(1, 1, kernel_size=k, padding=(k - 1) // 2, bias=False)
         self.conv_local = nn.Conv1d(1, 1, kernel_size=k, padding=(k - 1) // 2, bias=False)
-
         self.local_weight=local_weight
-
         self.local_arv_pool = nn.AdaptiveAvgPool2d(local_size)
         self.global_arv_pool=nn.AdaptiveAvgPool2d(1)
 
@@ -117,8 +110,7 @@ class Mix(nn.Module):
 class AFCA(nn.Module):
     def __init__(self, channel, b=1, gamma=2):
         super(AFCA, self).__init__()
-        self.avg_pool = nn.AdaptiveAvgPool2d(1)#全局平均池化
-        #一维卷积
+        self.avg_pool = nn.AdaptiveAvgPool2d(1)
         t = int(abs((math.log(channel, 2) + b) / gamma))
         k = t if t % 2 else t + 1
         self.conv1 = nn.Conv1d(1, 1, kernel_size=k, padding=int(k / 2), bias=False)
