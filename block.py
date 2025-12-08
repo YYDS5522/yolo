@@ -86,8 +86,6 @@ class Conv(nn.Module):
     def fuseforward(self, x):
         return self.act(self.conv(x))
 
-
-#多尺度增强模块
 class Enhance(nn.Module):
     def __init__(self, inc, bins=None):
         super().__init__()
