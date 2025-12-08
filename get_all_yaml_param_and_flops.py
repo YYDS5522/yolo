@@ -9,9 +9,9 @@ if __name__ == '__main__':
     flops_dict = {}
     model_size, model_type = 'n', ''
     if model_type == '':
-        yaml_base_path = ''  # 配置文件目录
+        yaml_base_path = '' 
     elif model_type == '':
-        yaml_base_path = ''  # 配置文件目录
+        yaml_base_path = ''  
     for yaml_path in tqdm.tqdm(glob.glob(f'{yaml_base_path}/*.yaml')):
         yaml_path = yaml_path.replace(f'{yaml_base_path}/{model_type}', f'{yaml_base_path}/{model_type}{model_size}')
         if 'DCN' in yaml_path:
