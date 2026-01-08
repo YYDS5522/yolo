@@ -10,7 +10,7 @@ if __name__ == '__main__':
               split='test',
               imgsz=640,
               batch=16,
-              iou=0.5,
+              # iou=0.5,
               project='runs/val',
               name='x',
               )
