@@ -4,14 +4,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from ultralytics.utils.metrics import OKS_SIGMA
-from ultralytics.utils.ops import crop_mask, xywh2xyxy, xyxy2xywh
-from ultralytics.utils.tal import RotatedTaskAlignedAssigner, TaskAlignedAssigner, dist2bbox, dist2rbox, make_anchors
-from ultralytics.utils.atss import ATSSAssigner, generate_anchors
-from .metrics import bbox_iou, probiou, bbox_mpdiou, bbox_inner_iou, bbox_focaler_iou, bbox_inner_mpdiou, bbox_focaler_mpdiou, wasserstein_loss, WiseIouLoss
-from .tal import bbox2dist
-
-
 import math
 class SlideLoss(nn.Module):
     def __init__(self, loss_fcn):
@@ -75,11 +67,6 @@ class EMASlideLoss:
             return loss
 
 class VarifocalLoss(nn.Module):
-    """
-    Varifocal loss by Zhang et al.
-
-    https://arxiv.org/abs/2008.13367.
-    """
 
     def __init__(self):
         """Initialize the VarifocalLoss class."""
@@ -123,11 +110,7 @@ class FocalLoss(nn.Module):
         return loss.mean(1).sum()
 
 class VarifocalLoss_YOLO(nn.Module):
-    """
-    Varifocal loss by Zhang et al.
 
-    https://arxiv.org/abs/2008.13367.
-    """
 
     def __init__(self, alpha=0.75, gamma=2.0):
         """Initialize the VarifocalLoss class."""
@@ -195,12 +178,6 @@ class DFLoss(nn.Module):
         self.reg_max = reg_max
 
     def __call__(self, pred_dist, target):
-        """
-        Return sum of left and right DFL losses.
-
-        Distribution Focal Loss (DFL) proposed in Generalized Focal Loss
-        https://ieeexplore.ieee.org/document/9792391
-        """
         target = target.clamp_(0, self.reg_max - 1 - 0.01)
         tl = target.long()  # target left
         tr = tl + 1  # target right
@@ -222,19 +199,12 @@ class BboxLoss(nn.Module):
         
         # NWD
         self.nwd_loss = False
-        # 启用NWD损失
-        # self.nwd_loss = True
         self.iou_ratio = 0.7 # total_iou_loss = self.iou_ratio * iou_loss + (1 - self.iou_ratio) * nwd_loss
         
         # WiseIOU
-        #启用wiseiou，将False该为true
-        # self.use_wiseiou = False #用bbox_inner_mpdiou、bbox_focaler_mpdiou
         self.use_wiseiou = True
         if self.use_wiseiou:
-            ### 未启用时不要注释
             # self.wiou_loss = WiseIouLoss(ltype='WIoU', monotonous=False, inner_iou=False, focaler_iou=False)
-            # WiseIoU时启用内部IoU,inner_iou=True
-            # self.wiou_loss = WiseIouLoss(ltype='WIoU', monotonous=False, inner_iou=True, focaler_iou=False)
             self.wiou_loss = WiseIouLoss(ltype='WIoU', monotonous=False, inner_iou=True, focaler_iou=True)
     def forward(self, pred_dist, pred_bboxes, anchor_points, target_bboxes, target_scores, target_scores_sum, fg_mask, mpdiou_hw=None):
         """IoU loss."""
@@ -247,18 +217,11 @@ class BboxLoss(nn.Module):
             loss_iou = (wiou * weight).sum() / target_scores_sum
         else:
             #####默认bbox_iou
-            # iou = bbox_iou(pred_bboxes[fg_mask], target_bboxes[fg_mask], xywh=False, CIoU=True)
+            iou = bbox_iou(pred_bboxes[fg_mask], target_bboxes[fg_mask], xywh=False, CIoU=True)
             # iou = bbox_inner_iou(pred_bboxes[fg_mask], target_bboxes[fg_mask], xywh=False, CIoU=True, ratio=0.7)
-            # 小目标检测，密集目标检测，内部 IoU 能更好地区分相邻目标。
-            iou = bbox_mpdiou(pred_bboxes[fg_mask], target_bboxes[fg_mask], xywh=False, mpdiou_hw=mpdiou_hw[fg_mask])
-            # 不规则形状的目标
-            # 方向敏感的检测任务
+            # iou = bbox_mpdiou(pred_bboxes[fg_mask], target_bboxes[fg_mask], xywh=False, mpdiou_hw=mpdiou_hw[fg_mask])
             # iou = bbox_inner_mpdiou(pred_bboxes[fg_mask], target_bboxes[fg_mask], xywh=False, mpdiou_hw=mpdiou_hw[fg_mask], ratio=0.7)
-            # 小而不规则的目标（如蚊子、蚂蚁）
-            # 密集且有方向变化的目标群
             # iou = bbox_focaler_iou(pred_bboxes[fg_mask], target_bboxes[fg_mask], xywh=False, CIoU=True, d=0.0, u=0.95)
-            # 不平衡数据集（类别数量极少）
-            # 困难样本挖掘（如部分遮挡） # 复杂场景（如有遮挡、重叠或姿态多变）
             # iou = bbox_focaler_mpdiou(pred_bboxes[fg_mask], target_bboxes[fg_mask], xywh=False, mpdiou_hw=mpdiou_hw[fg_mask], d=0.0, u=0.95)
 
             loss_iou = ((1.0 - iou) * weight).sum() / target_scores_sum
@@ -330,14 +293,9 @@ class v8DetectionLoss:
 
         m = model.model[-1]  # Detect() module
         ####默认nn.BCEWithLogitsLoss(reduction="none")
-        # self.bce = nn.BCEWithLogitsLoss(reduction="none")
+        self.bce = nn.BCEWithLogitsLoss(reduction="none")
         # self.bce = EMASlideLoss(nn.BCEWithLogitsLoss(reduction='none'))  # Exponential Moving Average Slide Loss
         # self.bce = SlideLoss(nn.BCEWithLogitsLoss(reduction='none')) # Slide Loss
-        # self.bce = FocalLoss_YOLO(alpha=0.25, gamma=1.5) # FocalLoss
-        # self.bce = FocalLoss_YOLO(alpha=0.75, gamma=2.0)  # FocalLoss
-        # self.bce = VarifocalLoss_YOLO(alpha=0.75, gamma=2.0) # VarifocalLoss
-        self.bce = VarifocalLoss_YOLO(alpha=0.85, gamma=2.5)  # VarifocalLoss
-        # self.bce = QualityfocalLoss_YOLO(beta=2.0) # QualityfocalLoss
         self.hyp = h
         self.stride = m.stride  # model strides
         self.nc = m.nc  # number of classes
@@ -359,34 +317,6 @@ class v8DetectionLoss:
         self.grid_cell_offset = 0.5
         self.fpn_strides = list(self.stride.detach().cpu().numpy())
         self.grid_cell_size = 5.0
-
-        #类别权重配置（针对困难类别）
-        # 为困难类别设置更高的损失权重
-        self.class_weights = torch.ones(self.nc, device=self.device)
-
-        # 根据你的数据集类别顺序设置权重
-        # 类别顺序（从data.yaml）：
-        # 0: Hellula undalis
-        # 1: Leaf Webber
-        # 2: ash weevil
-        # 3: blister beetle
-        # 4: fruit fly
-        # 5: fruit sucking moth
-        # 6: helicoverpa
-        # 7: leucinodes
-        # 8: mealy bug
-        # 9: pieris
-        # 10: plutella
-        # 11: root grubs
-        # 12: schizaphis graminum
-        # 困难类别加权
-
-        self.class_weights[2] = 3.0  # ash weevil (最差82.9%，大幅提升到3.0x) ⭐⭐⭐
-        self.class_weights[6] = 2.0  # helicoverpa (78.0%，提升到2.5x) ⭐⭐
-        self.class_weights[8] = 2.0  # mealy bug (85.7%，提升到2.0x) ⭐
-        self.class_weights[9] = 1.5  # pieris (88.7%，保持1.5x)
-        self.class_weights[12] = 1.5  # schizaphis graminum (86.8%，保持1.2x)
-
 
     def preprocess(self, targets, batch_size, scale_tensor):
         """Preprocesses the target counts and matches with the input batch size to output a tensor."""
