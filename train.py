@@ -13,7 +13,7 @@ if __name__ == '__main__':
     model.train(data=r'',
                 cache=False,
                 imgsz=640,
-                epochs=200,
+                epochs=300,
                 batch=32,
                 close_mosaic=0,
                 workers=0,
