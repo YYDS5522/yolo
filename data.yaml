@@ -1,0 +1,26 @@
+# data path
+path: 
+train:  # path + train
+val:    # path + val
+test:   # path + test
+
+# number of classes
+nc: 15
+
+# class names
+names:
+  - Hellula undalis
+  - Leaf Webber
+  - ash weevil
+  - blister beetle
+  - fruit fly
+  - fruit sucking moth
+  - helicoverpa
+  - leucinodes
+  - mealy bug
+  - pieris
+  - plutella
+  - root grubs
+  - schizaphis graminum
+  - uroleucon compositae
+  - whitefly
