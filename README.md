@@ -51,7 +51,7 @@ pip install -r requirements.txt
 
   pip install -r requirements.txt
 
-## Dataset Preparation
+# Dataset Preparation
 Place the dataset into the data/ directory following the standard YOLO structure.
 Edit the data/data.yaml file to correct the train/val/test paths and add the dataset class names.
 
@@ -80,20 +80,20 @@ Backbone: Improved CSPDarknet, where the standard C2f modules are replaced with 
 Neck: MANet_PD module, designed based on the MANet module, optimizes multi‑scale feature fusion and pest feature representation.
 Head: The standard YOLOv8 detection head is retained, but trained with the WiseIoU loss function to improve bounding‑box regression accuracy.
 
-## Training Configuration
-# Key Hyperparameters
+# Training Configuration
+## Key Hyperparameters
 Optimizer: SGD
 Batch Size: 8; Epochs: 300; Early‑stopping Patience: 100
 Input Image Size: 640×640
 Loss Function Coefficients: iou=0.7
 
-# Evaluation Method
+## Evaluation Method
 
 Comparative Experiments: Performance of Enhance‑YOLOv8 is compared against the YOLOv8 baseline, YOLOv5, YOLOv11, and other mainstream detectors on the same test set.
 Ablation Study: Core components (Enhance_AFCA, MANet_PD, WiseIoU) are added incrementally to validate the performance contribution of each module.
 Robustness Analysis: Model performance is evaluated under typical agricultural‑scene challenges such as scale variation and target occlusion.
 
-# Assessment Metrics
+## Assessment Metrics
 Standard object‑detection metrics are used, defined as follows:
 Precision: Proportion of true positives (TP) among samples predicted as positive, measuring detection accuracy.
 Recall: Proportion of actual positive samples correctly detected (TP), reflecting target coverage capability.
