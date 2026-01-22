@@ -65,7 +65,7 @@ After training, evaluate the model performance using the best weights:
 Basic validation command:
 python val.py
 
-## Requirements
+### Requirements
 Running this project requires the following environment dependencies:
 Python ≥ 3.10.18
 PyTorch ≥ 2.1.7 (GPU version must match the corresponding CUDA; cu126 is recommended)
@@ -74,7 +74,7 @@ opencv‑python ≥ 4.8.0
 numpy ≥ 1.24.0
 matplotlib ≥ 3.7.0
 
-## Methodology
+### Methodology
 Model Architecture
 Backbone: Improved CSPDarknet, where the standard C2f modules are replaced with Enhance_AFCA modules to enhance multi‑scale contextual feature extraction for small targets.
 Neck: MANet_PD module, designed based on the MANet module, optimizes multi‑scale feature fusion and pest feature representation.
@@ -93,7 +93,7 @@ Comparative Experiments: Performance of Enhance‑YOLOv8 is compared against the
 Ablation Study: Core components (Enhance_AFCA, MANet_PD, WiseIoU) are added incrementally to validate the performance contribution of each module.
 Robustness Analysis: Model performance is evaluated under typical agricultural‑scene challenges such as scale variation and target occlusion.
 
-## Assessment Metrics
+### Assessment Metrics
 Standard object‑detection metrics are used, defined as follows:
 Precision: Proportion of true positives (TP) among samples predicted as positive, measuring detection accuracy.
 Recall: Proportion of actual positive samples correctly detected (TP), reflecting target coverage capability.
@@ -101,7 +101,7 @@ Average Precision (AP): Integrates precision across different recall levels, mea
 mean Average Precision (mAP): Average of AP over all classes, serving as the core metric for overall model performance.
 Parameters/GFLOPs: Quantify model complexity and computational efficiency.
 
-## Dataset Statement
+### Dataset Statement
 The agricultural pest dataset used in this project is employed solely for validating the performance of this framework and has not been used in other research. No additional citations are required.
 
 
