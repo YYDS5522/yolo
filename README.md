@@ -1,37 +1,38 @@
-# Research on Agricultural Pest Detection Based on Improved YOLOv8
+## Research on Agricultural Pest Detection Based on Improved YOLOv8
 
-## Description
+# Description
 This project implements the Enhance-YOLOv8 robust detection framework, specifically optimized for small‑target pest detection tasks in complex agricultural scenarios. By integrating an adaptive fine‑grained channel attention module, a pest‑specific multi‑scale aggregation network, and a dynamic bounding‑box regression loss into the base YOLOv8 architecture, the framework significantly improves the detection accuracy of tiny, dense, and occluded pests in field images. The code repository includes the model implementation, training/validation scripts, and instructions for reproducing the experiments.
-## Dataset Information
+# Dataset Information
 The performance of the framework is validated on an agricultural pest dataset. Key information about the dataset is as follows:
-### Access link: 
+# Access link: 
 The dataset can be obtained from: https://github.com/YYDS5522/data
-### Format specification: 
+# Format specification: 
 Image files are in standard .jpg format, and annotation files are in YOLO‑format .txt files, both meeting human‑ and machine‑readable requirements.
-### Preprocessing & Augmentation: 
+# Preprocessing & Augmentation: 
 The standard YOLO preprocessing pipeline is applied, specifically:
 Images are uniformly resized to 640×640 pixels;
 Pixel values are normalized;
 Full‑epoch Mosaic augmentation is enabled during training (close_mosaic=0); other augmentation parameters follow the official YOLO default configuration (see "Training Configuration").
-## Directory structure: 
+# Directory structure: 
 The dataset follows the standard YOLO structure. The training/validation/test sets must each contain images/ and labels/ sub‑folders. Paths and class information are configured via the data/data.yaml file.
-# Code Information
-## Project Structure
+
+## Code Information
+# Project Structure
 
 <img width="898" height="411" alt="image" src="https://github.com/user-attachments/assets/7392574b-0e5d-4fa6-8555-4d68388b71e2" />
 
-### Core Components
+# Core Components
 The core innovative modules are implemented in models/block.py and utils/loss.py. Key components include:
-## Enhance_AFCA Module:
+# Enhance_AFCA Module:
 Replaces the bottleneck structure in the standard YOLOv8 C2f module, integrating multi‑scale feature extraction with adaptive fine‑grained channel attention to enhance the capture of small‑pest features.
-## MANet_PD Module: 
+# MANet_PD Module: 
 A multi‑scale aggregation network designed for the model neck, optimizing feature refinement and fusion via the Star_Block module.
-## WiseIoU Loss Function: 
+# WiseIoU Loss Function: 
 A dynamic bounding‑box regression loss with a focusing mechanism and penalty term, tailored for regression tasks on low‑quality samples in pest datasets.
 
 ## Usage Instructions
 
-### Environment Setup
+# Environment Setup
 
 # Clone the repository
 git clone https://github.com/YYDS5522/yolo.git
@@ -39,7 +40,7 @@ cd yolo
 # Install dependencies (recommended to create a virtual environment first)
 pip install -r requirements.txt
 
-### Installation
+## Installation
 
 # Clone the repository
   git clone https://github.com/YYDS5522/yolo.git
@@ -78,8 +79,8 @@ Backbone: Improved CSPDarknet, where the standard C2f modules are replaced with 
 Neck: MANet_PD module, designed based on the MANet module, optimizes multi‑scale feature fusion and pest feature representation.
 Head: The standard YOLOv8 detection head is retained, but trained with the WiseIoU loss function to improve bounding‑box regression accuracy.
 
-# Training Configuration
-## Key Hyperparameters
+## Training Configuration
+# Key Hyperparameters
 Optimizer: SGD
 Batch Size: 8; Epochs: 300; Early‑stopping Patience: 100
 Input Image Size: 640×640
