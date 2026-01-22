@@ -55,12 +55,12 @@ pip install -r requirements.txt
 Place the dataset into the data/ directory following the standard YOLO structure.
 Edit the data/data.yaml file to correct the train/val/test paths and add the dataset class names.
 
-## Model Training
+### Model Training
 Execute the training script:
 Basic training command (loads default configuration):
 python train.py
 
-## Model Validation/Testing
+### Model Validation/Testing
 After training, evaluate the model performance using the best weights:
 Basic validation command:
 python val.py
