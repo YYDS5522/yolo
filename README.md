@@ -1,4 +1,4 @@
-## Research on Agricultural Pest Detection Based on Improved YOLOv8
+# Research on Agricultural Pest Detection Based on Improved YOLOv8
 
 # Description
 This project implements the Enhance-YOLOv8 robust detection framework, specifically optimized for small‑target pest detection tasks in complex agricultural scenarios. By integrating an adaptive fine‑grained channel attention module, a pest‑specific multi‑scale aggregation network, and a dynamic bounding‑box regression loss into the base YOLOv8 architecture, the framework significantly improves the detection accuracy of tiny, dense, and occluded pests in field images. The code repository includes the model implementation, training/validation scripts, and instructions for reproducing the experiments.
@@ -16,37 +16,38 @@ Full‑epoch Mosaic augmentation is enabled during training (close_mosaic=0); ot
 # Directory structure: 
 The dataset follows the standard YOLO structure. The training/validation/test sets must each contain images/ and labels/ sub‑folders. Paths and class information are configured via the data/data.yaml file.
 
-## Code Information
-# Project Structure
+# Code Information
+## Project Structure
 
 <img width="898" height="411" alt="image" src="https://github.com/user-attachments/assets/7392574b-0e5d-4fa6-8555-4d68388b71e2" />
 
-# Core Components
+## Core Components
 The core innovative modules are implemented in models/block.py and utils/loss.py. Key components include:
-# Enhance_AFCA Module:
+## Enhance_AFCA Module:
 Replaces the bottleneck structure in the standard YOLOv8 C2f module, integrating multi‑scale feature extraction with adaptive fine‑grained channel attention to enhance the capture of small‑pest features.
-# MANet_PD Module: 
+## MANet_PD Module: 
 A multi‑scale aggregation network designed for the model neck, optimizing feature refinement and fusion via the Star_Block module.
-# WiseIoU Loss Function: 
+## WiseIoU Loss Function: 
 A dynamic bounding‑box regression loss with a focusing mechanism and penalty term, tailored for regression tasks on low‑quality samples in pest datasets.
 
-## Usage Instructions
+# Usage Instructions
 
-# Environment Setup
+## Environment Setup
 
-# Clone the repository
+### Clone the repository
 git clone https://github.com/YYDS5522/yolo.git
 cd yolo
-# Install dependencies (recommended to create a virtual environment first)
+
+### Install dependencies (recommended to create a virtual environment first)
 pip install -r requirements.txt
 
 ## Installation
 
-# Clone the repository
+### Clone the repository
   git clone https://github.com/YYDS5522/yolo.git
   cd yolo
 
-# Install dependencies
+### Install dependencies
 
   pip install -r requirements.txt
 
