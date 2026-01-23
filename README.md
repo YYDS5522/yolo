@@ -1,4 +1,4 @@
-# Research on Agricultural Pest Detection Based on Improved YOLOv8
+# Enhance-YOLOv8: A robust small-object detection framework for complex agricultural pest scenarios
 
 ## Description
 This project implements the Enhance-YOLOv8 robust detection framework, specifically optimized for small‑target pest detection tasks in complex agricultural scenarios. By integrating an adaptive fine‑grained channel attention module, a pest‑specific multi‑scale aggregation network, and a dynamic bounding‑box regression loss into the base YOLOv8 architecture, the framework significantly improves the detection accuracy of tiny, dense, and occluded pests in field images. The code repository includes the model implementation, training/validation scripts, and instructions for reproducing the experiments.
