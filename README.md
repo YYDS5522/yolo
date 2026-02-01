@@ -55,8 +55,6 @@ cd yolo
 #### Install dependencies (recommended to create a virtual environment first)
 pip install -r requirements.txt
 
-## Installation
-
 ## Dataset Preparation
 Place the dataset into the data/ directory following the standard YOLO structure.
 Edit the data/data.yaml file to correct the train/val/test paths and add the dataset class names.
