@@ -23,6 +23,20 @@ The dataset can be obtained from: https://github.com/YYDS5522/data
 - Image files are in standard `.jpg` format
 - Annotation files are in YOLO-format `.txt` files
 - Both formats meet human- and machine-readable requirements
+### Dataset Structure
+The dataset follows the standard YOLO directory structure:
+- The training/validation/test sets must each contain `images/` and `labels/` sub-folders
+```
+dataset/
+├──images/
+│    ├── train/
+│    ├── test/
+│    └── val/
+└──labels/
+     ├── train/
+     ├── test/
+     └── val/
+```
 
 ### Preprocessing & Augmentation
 The standard YOLO preprocessing pipeline is applied, specifically:
@@ -30,11 +44,6 @@ The standard YOLO preprocessing pipeline is applied, specifically:
 - Pixel values are normalized
 - Full-epoch Mosaic augmentation is enabled during training (`close_mosaic=0`)
 - Other augmentation parameters follow the official YOLO default configuration (see "Training Configuration" section)
-
-### Directory Structure
-The dataset follows the standard YOLO structure:
-- The training/validation/test sets must each contain `images/` and `labels/` sub-folders
-- Paths and class information are configured via the `data/data.yaml` file
 
 ## Requirements
 
