@@ -1,151 +1,48 @@
-# Enhance-YOLOv8: A Robust Small-Object Detection Framework for Complex Agricultural Pest Scenarios
+# Research on Agricultural Pest Detection Based on Improved YOLOv8
+# Enhance-YOLOv8: A robust small-object detection framework for complex agricultural pest scenarios
 
 ## Description
-
-This project implements the Enhance-YOLOv8 robust detection framework, specifically optimized for small-target pest detection tasks in complex agricultural scenarios. By integrating an adaptive fine-grained channel attention module, a pest-specific multi-scale aggregation network, and a dynamic bounding-box regression loss into the base YOLOv8 architecture, the framework significantly improves the detection accuracy of tiny, dense, and occluded pests in field images. The code repository includes the model implementation, training/validation scripts, and instructions for reproducing the experiments.
-
-## Key Innovations
-
-1. **Enhance_AFCA Module**: Replaces the bottleneck structure in the standard YOLOv8 C2f module, integrating multi-scale feature extraction with adaptive fine-grained channel attention to enhance the capture of small-pest features.
-
-2. **MANet_PD Module**: A multi-scale aggregation network designed for the model neck, optimizing feature refinement and fusion via the Star_Block module.
-
-3. **WiseIoU Loss Function**: A dynamic bounding-box regression loss with a focusing mechanism and penalty term, tailored for regression tasks on low-quality samples in pest datasets.
-
+This project implements the Enhance-YOLOv8 robust detection framework, specifically optimized for small‑target pest detection tasks in complex agricultural scenarios. By integrating an adaptive fine‑grained channel attention module, a pest‑specific multi‑scale aggregation network, and a dynamic bounding‑box regression loss into the base YOLOv8 architecture, the framework significantly improves the detection accuracy of tiny, dense, and occluded pests in field images. The code repository includes the model implementation, training/validation scripts, and instructions for reproducing the experiments.
 ## Dataset Information
-
 The performance of the framework is validated on an agricultural pest dataset. Key information about the dataset is as follows:
-
-### Access Link
+## Access link: 
 The dataset can be obtained from: https://github.com/YYDS5522/data
-
-### Format Specification
-- Image files are in standard `.jpg` format
-- Annotation files are in YOLO-format `.txt` files
-- Both formats meet human- and machine-readable requirements
-### Dataset Structure
-The dataset follows the standard YOLO directory structure:
-- The training/validation/test sets must each contain `images/` and `labels/` sub-folders
-```
-dataset/
-├──images/
-│    ├── train/
-│    ├── test/
-│    └── val/
-└──labels/
-     ├── train/
-     ├── test/
-     └── val/
-```
-
-### Preprocessing & Augmentation
+## Format specification: 
+Image files are in standard .jpg format, and annotation files are in YOLO‑format .txt files, both meeting human‑ and machine‑readable requirements.
+## Preprocessing & Augmentation: 
 The standard YOLO preprocessing pipeline is applied, specifically:
-- Images are uniformly resized to 640×640 pixels
-- Pixel values are normalized
-- Full-epoch Mosaic augmentation is enabled during training (`close_mosaic=0`)
-- Other augmentation parameters follow the official YOLO default configuration (see "Training Configuration" section)
+Images are uniformly resized to 640×640 pixels;
+Pixel values are normalized;
+Full‑epoch Mosaic augmentation is enabled during training (close_mosaic=0); other augmentation parameters follow the official YOLO default configuration (see "Training Configuration").
+## Directory structure: 
+The dataset follows the standard YOLO structure. The training/validation/test sets must each contain images/ and labels/ sub‑folders. Paths and class information are configured via the data/data.yaml file.
 
-## Requirements
+## Code Information
+### Project Structure
 
-Running this project requires the following environment dependencies:
-- Python ≥ 3.10.18
-- PyTorch ≥ 2.1.7 (GPU version must match the corresponding CUDA; cu126 is recommended)
-- ultralytics ≥ 8.2.50
-- opencv-python ≥ 4.8.0
-- numpy ≥ 1.24.0
-- matplotlib ≥ 3.7.0
-
-## Installation
-
-### Clone the Repository
-```bash
-git clone https://github.com/YYDS5522/yolo.git
-cd yolo
+```
+yolo/
+├── ultralytics/
+│   ├── nn/
+│   │   ├── modules/
+│   │      └── block.py           # Core modules: C3k2_AFCA, MANet_Star, etc.
+│   └── utils/
+│       └── loss.py               # Loss function integration
+├── data/
+│   └── data.yaml                 # Dataset configuration
+├── train.py                      # Training script
+├── val.py                        # Validation script
+└── requirements.txt              # Dependencies
 ```
 
-### Install Dependencies
-It is recommended to create a virtual environment first:
-```bash
-# Create virtual environment (optional but recommended)
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-## Dataset Preparation
-
-1. Place the dataset into the `data/` directory following the standard YOLO structure
-2. Edit the `data/data.yaml` file to correct the `train/val/test` paths and add the dataset class names
-   
-Example `data.yaml` structure:
-```yaml
-# dataset path
-path:/path/to/dataset
-train: ./dataset/images/train   # path + train
-val: ./dataset/images/val1      # path + val
-test: ./dataset/images/test     # path + test
-
-# number of classes
-nc: 15
-
-# class names
-names:
-  - Hellula undalis
-  - Leaf Webber
-  - ash weevil
-  - blister beetle
-  - fruit fly
-  - fruit sucking moth
-  - helicoverpa
-  - leucinodes
-  - mealy bug
-  - pieris
-  - plutella
-  - root grubs
-  - schizaphis graminum
-  - uroleucon compositae
-  - whitefly
-```
-
-## Usage
-
-### Model Training
-
-Execute the training script with the following command:
-
-```bash
-# Basic training command (loads default configuration)
-python train.py
-```
-
-### Model Validation/Testing
-
-After training, evaluate the model performance using the best weights:
-
-```bash
-# Basic validation command
-python val.py
-```
-
-## Model Architecture
-
-### Backbone
-Improved CSPDarknet, where the standard C2f modules are replaced with **Enhance_AFCA** modules to enhance multi-scale contextual feature extraction for small targets.
-
-**Implementation Location**: `ultralytics/nn/modules/block.py` (Enhance_AFCA class)
-
-### Neck
-**MANet_PD** module, designed based on the MANet module, optimizes multi-scale feature fusion and pest feature representation.
-
-**Implementation Location**: `ultralytics/nn/modules/block.py` (MANet_PD class)
-
-### Head
-The standard YOLOv8 detection head is retained, but trained with the **WiseIoU** loss function to improve bounding-box regression accuracy.
-
-**Implementation Location**: `ultralytics/utils/loss.py` (WiseIouLoss class)
-
+### Core Components
+The core innovative modules are implemented in models/block.py and utils/loss.py. Key components include:
+### Enhance_AFCA Module:
+Replaces the bottleneck structure in the standard YOLOv8 C2f module, integrating multi‑scale feature extraction with adaptive fine‑grained channel attention to enhance the capture of small‑pest features.
+### MANet_PD Module: 
+A multi‑scale aggregation network designed for the model neck, optimizing feature refinement and fusion via the Star_Block module.
+### WiseIoU Loss Function: 
+A dynamic bounding‑box regression loss with a focusing mechanism and penalty term, tailored for regression tasks on low‑quality samples in pest datasets.
 
 ## Usage Instructions
 
@@ -200,8 +97,9 @@ Head: The standard YOLOv8 detection head is retained, but trained with the WiseI
 ## Training Configuration
 ### Key Hyperparameters
 Optimizer: SGD
-Batch Size: 8; Epochs: 300;
+Batch Size: 8; Epochs: 300; Early‑stopping Patience: 100
 Input Image Size: 640×640
+Loss Function Coefficients: iou=0.7
 
 ### Evaluation Method
 
@@ -219,89 +117,3 @@ Parameters/GFLOPs: Quantify model complexity and computational efficiency.
 
 ### Dataset Statement
 The agricultural pest dataset used in this project is employed solely for validating the performance of this framework and has not been used in other research. No additional citations are required.
-
-## Training Configuration
-
-### Key Hyperparameters
-- **Optimizer**: SGD
-- **Batch Size**: 8
-- **Epochs**: 300
-- **Early-stopping Patience**: 100
-- **Input Image Size**: 640×640
-
-### Training Command Example
-```bash
-python train.py
-```
-
-## Evaluation Method
-
-### Comparative Experiments
-Performance of Enhance-YOLOv8 is compared against the YOLOv8 baseline, YOLOv5, YOLOv11, and other mainstream detectors on the same test set.
-
-### Ablation Study
-Core components (Enhance_AFCA, MANet_PD, WiseIoU) are added incrementally to validate the performance contribution of each module.
-
-### Robustness Analysis
-Model performance is evaluated under typical agricultural-scene challenges such as scale variation and target occlusion.
-
-## Evaluation Metrics
-
-Standard object-detection metrics are used, defined as follows:
-
-- **Precision**: Proportion of true positives (TP) among samples predicted as positive, measuring detection accuracy.
-- **Recall**: Proportion of actual positive samples correctly detected (TP), reflecting target coverage capability.
-- **Average Precision (AP)**: Integrates precision across different recall levels, measuring single-class detection performance.
-- **mean Average Precision (mAP)**: Average of AP over all classes, serving as the core metric for overall model performance.
-- **Parameters/GFLOPs**: Quantify model complexity and computational efficiency.
-
-## Project Structure
-
-```
-yolo/
-├── ultralytics/
-│   ├── nn/
-│   │   ├── modules/
-│   │      └── block.py           # Core modules: C3k2_AFCA, MANet_Star, etc.
-│   └── utils/
-│       └── loss.py               # Loss function integration
-├── data/
-│   └── data.yaml                 # Dataset configuration
-├── train.py                      # Training script
-├── val.py                        # Validation script
-└── requirements.txt              # Dependencies
-```
-
-
-## Core Components
-
-The core innovative modules are implemented in:
-- **`ultralytics/nn/modules/block.py`**: Contains Enhance_AFCA and MANet_PD modules
-- **`ultralytics/utils/loss.py`**: Contains WiseIouLoss implementation
-
-### Module Details
-
-#### Enhance_AFCA Module
-- **Location**: `ultralytics/nn/modules/block.py`
-- **Function**: Adaptive fine-grained channel attention for small-target feature enhancement
-- **Usage**: Replaces standard C2f modules in backbone
-
-#### MANet_PD Module
-- **Location**: `ultralytics/nn/modules/block.py`
-- **Function**: Multi-scale aggregation network with Star_Block for feature fusion
-- **Usage**: Applied in neck section for multi-scale feature refinement
-
-#### WiseIoU Loss Function
-- **Location**: `ultralytics/utils/loss.py`
-- **Function**: Dynamic bounding-box regression loss with focusing mechanism
-- **Usage**: Replaces standard IoU loss in training
-
-## Dataset Statement
-
-The agricultural pest dataset used in this project is employed solely for validating the performance of this framework and has not been used in other research. No additional citations are required.
-
-## Contact
-
-For questions or issues, please open an issue on GitHub.
-
-
