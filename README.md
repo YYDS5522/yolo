@@ -25,7 +25,7 @@ yolo/
 ├── ultralytics/
 │   ├── nn/
 │   │   ├── modules/
-│   │      └── block.py           # Core modules: C3k2_AFCA, MANet_Star, etc.
+│   │      └── block.py           # Core modules: Enhance_AFCA, MANet_PD, etc.
 │   └── utils/
 │       └── loss.py               # Loss function integration
 ├── data/
