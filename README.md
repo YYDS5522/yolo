@@ -57,14 +57,6 @@ pip install -r requirements.txt
 
 ## Installation
 
-### Clone the repository
-  git clone https://github.com/YYDS5522/yolo.git
-  cd yolo
-
-### Install dependencies
-
-  pip install -r requirements.txt
-
 ## Dataset Preparation
 Place the dataset into the data/ directory following the standard YOLO structure.
 Edit the data/data.yaml file to correct the train/val/test paths and add the dataset class names.
