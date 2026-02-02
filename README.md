@@ -87,9 +87,8 @@ Head: The standard YOLOv8 detection head is retained, but trained with the WiseI
 ## Training Configuration
 ### Key Hyperparameters
 Optimizer: SGD
-Batch Size: 8; Epochs: 300; Early‑stopping Patience: 100
+Batch Size: 16; Epochs: 300; Early‑stopping Patience: 100
 Input Image Size: 640×640
-Loss Function Coefficients: iou=0.7
 
 ### Evaluation Method
 
