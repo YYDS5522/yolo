@@ -38,7 +38,7 @@ Replaces the bottleneck structure in the standard YOLOv8 C2f module, integrating
 ### MANet_PD Module: 
 A multi‑scale aggregation network designed for the model neck, optimizing feature refinement and fusion via the Star_Block module.
 ### WiseIoU Loss Function: 
-A dynamic bounding‑box regression loss with a focusing mechanism and penalty term, tailored for regression tasks on low‑quality samples in pest datasets.
+A dynamic bounding‑box regression loss with a focusing mechanism and penalty term.
 
 ## Usage Instructions
 
@@ -69,10 +69,6 @@ python val.py
 Running this project requires the following environment dependencies:
 Python ≥ 3.10.18
 PyTorch ≥ 2.1.7 (GPU version must match the corresponding CUDA; cu126 is recommended)
-ultralytics ≥ 8.2.50
-opencv‑python ≥ 4.8.0
-numpy ≥ 1.24.0
-matplotlib ≥ 3.7.0
 
 ### Methodology
 Model Architecture
