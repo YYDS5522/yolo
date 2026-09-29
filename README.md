@@ -67,8 +67,8 @@ python val.py
 
 ### Requirements
 Running this project requires the following environment dependencies:
-Python ≥ 3.10.18
-PyTorch ≥ 2.1.7 (GPU version must match the corresponding CUDA; cu126 is recommended)
+Python ≥ 3.10
+PyTorch ≥ 2.1.7 (GPU version must match the corresponding CUDA)
 
 ### Methodology
 Model Architecture
