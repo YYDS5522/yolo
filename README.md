@@ -3,15 +3,6 @@
 
 ## Description
 This project implements the Enhance-YOLOv8 robust detection framework, specifically optimized for small‑target pest detection tasks in complex agricultural scenarios. By integrating an adaptive fine‑grained channel attention module, a pest‑specific multi‑scale aggregation network, and a dynamic bounding‑box regression loss into the base YOLOv8 architecture, the framework significantly improves the detection accuracy of tiny, dense, and occluded pests in field images. The code repository includes the model implementation, training/validation scripts, and instructions for reproducing the experiments.
-## Format specification: 
-Image files are in standard .jpg format, and annotation files are in YOLO‑format .txt files, both meeting human‑ and machine‑readable requirements.
-## Preprocessing & Augmentation: 
-The standard YOLO preprocessing pipeline is applied, specifically:
-Images are uniformly resized to 640×640 pixels;
-Pixel values are normalized;
-Full‑epoch Mosaic augmentation is enabled during training (close_mosaic=0); other augmentation parameters follow the official YOLO default configuration (see "Training Configuration").
-## Directory structure: 
-The dataset follows the standard YOLO structure. The training/validation/test sets must each contain images/ and labels/ sub‑folders. Paths and class information are configured via the data/data.yaml file.
 
 ## Code Information
 ### Project Structure
@@ -77,11 +68,6 @@ Neck: MANet_PD module, designed based on the MANet module, optimizes multi‑sca
 Head: The standard YOLOv8 detection head is retained, but trained with the WiseIoU loss function to improve bounding‑box regression accuracy.
 
 ## Training Configuration
-### Key Hyperparameters
-Optimizer: SGD
-Batch Size: 16; Epochs: 300; Early‑stopping Patience: 100
-Input Image Size: 640×640
-
 ### Evaluation Method
 
 Comparative Experiments: Performance of Enhance‑YOLOv8 is compared against the YOLOv8 baseline, YOLOv5, YOLOv11, and other mainstream detectors on the same test set.
