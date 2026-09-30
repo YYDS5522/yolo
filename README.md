@@ -56,17 +56,6 @@ After training, evaluate the model performance using the best weights:
 Basic validation command:
 python val.py
 
-### Requirements
-Running this project requires the following environment dependencies:
-Python ≥ 3.10
-PyTorch ≥ 2.1.7 (GPU version must match the corresponding CUDA)
-
-### Methodology
-Model Architecture
-Backbone: Improved CSPDarknet, where the standard C2f modules are replaced with Enhance_AFCA modules to enhance multi‑scale contextual feature extraction for small targets.
-Neck: MANet_PD module, designed based on the MANet module, optimizes multi‑scale feature fusion and pest feature representation.
-Head: The standard YOLOv8 detection head is retained, but trained with the WiseIoU loss function to improve bounding‑box regression accuracy.
-
 ## Training Configuration
 ### Evaluation Method
 
