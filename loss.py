@@ -7,14 +7,9 @@ class BboxLoss(nn.Module):
         super().__init__()
         self.dfl_loss = DFLoss(reg_max) if reg_max > 1 else None
         
-        # NWD
-        self.nwd_loss = False
-        self.iou_ratio = 0.7 # total_iou_loss = self.iou_ratio * iou_loss + (1 - self.iou_ratio) * nwd_loss
-        
         # WiseIOU
         self.use_wiseiou = True
         if self.use_wiseiou:
-            # self.wiou_loss = WiseIouLoss(ltype='WIoU', monotonous=False, inner_iou=False, focaler_iou=False)
             self.wiou_loss = WiseIouLoss(ltype='WIoU', monotonous=False, inner_iou=True, focaler_iou=True)
     def forward(self, pred_dist, pred_bboxes, anchor_points, target_bboxes, target_scores, target_scores_sum, fg_mask, mpdiou_hw=None):
         """IoU loss."""
